@@ -55,7 +55,7 @@ jobs:
           VERSION=${{ github.ref_name }}
           qgis-plugin-ci release ${VERSION} \
             --allow-uncommitted-changes \
-            --asset-path pg_service_parser/LICENSE \
+            --asset-path ml4qgis/LICENSE \
             --github-token ${{ secrets.GITHUB_TOKEN }} \
             --osgeo-username ${{ secrets.OSGEO_PLUGIN_USERNAME }} \
             --osgeo-password ${{ secrets.OSGEO_PLUGIN_PASSWORD }}
