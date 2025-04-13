@@ -153,7 +153,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         for feature in source.getFeatures():
             # Identify the raster values at the point for all bands
             results = provider.identify(
-                feature.geometry().transform(transform).asPoint(), QgsRaster.IdentifyFormatValue
+                transform.transform(feature.geometry().asPoint()), QgsRaster.IdentifyFormatValue
             )
 
             # Each sample contains: all band values first and the label last
@@ -218,4 +218,4 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         out_band.WriteArray(class_image_2d)
         out_band.FlushCache()
 
-        return {self.OUTPUT: out_band}
+        return {self.CLASSIFIED_IMAGE: out_band}
