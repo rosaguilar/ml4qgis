@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.orig
+/*.zip
+.DS_Store
+.pydevproject
+.project
+.settings
+.idea
+.vscode
+env

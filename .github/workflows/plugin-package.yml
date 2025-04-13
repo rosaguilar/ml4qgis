@@ -1,0 +1,61 @@
+name: 🔌 Plugin | Package and release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  plugin-package:
+    name: Packages and releases plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install qgis-plugin-ci
+        run: pip install qgis-plugin-ci>=2.8.6
+
+      - name: copy licence
+        run: cp LICENSE ml4qgis/LICENSE
+
+      - name: Package
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          VERSION=0.0.0
+          qgis-plugin-ci package ${VERSION} \
+            --allow-uncommitted-changes
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+        with:
+          name: ml4qgis_dev
+          path: ml4qgis.0.0.0.zip
+          if-no-files-found: error
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          VERSION=${{ github.ref_name }}
+          qgis-plugin-ci release ${VERSION} \
+            --allow-uncommitted-changes \
+            --asset-path pg_service_parser/LICENSE \
+            --github-token ${{ secrets.GITHUB_TOKEN }} \
+            --osgeo-username ${{ secrets.OSGEO_PLUGIN_USERNAME }} \
+            --osgeo-password ${{ secrets.OSGEO_PLUGIN_PASSWORD }}
