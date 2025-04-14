@@ -15,7 +15,7 @@ The algorithm requires two parameters:
 <ul>
   <li>A point vector layer with a numeric field called *label* as input data for training</li>
   <li>The image to process</li>
-  <li>optionally a name for the output that is the classified image</li>
+  <li> (optional) A name for the output - classified image</li>
 </ul>
 
 You only need to prepare your training samples by adding points and label. 
