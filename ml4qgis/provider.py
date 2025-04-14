@@ -16,7 +16,7 @@ class Ml4QgisProcessingProvider(QgsProcessingProvider):
         self.alglist = [RandomForestProcessingAlgorithm()]
 
         for alg in self.alglist:
-            alg.provider = self
+            alg.setProvider(self)
 
     def getAlgs(self):
         return self.alglist
