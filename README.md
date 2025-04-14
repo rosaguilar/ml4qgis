@@ -10,12 +10,12 @@ or the average of the prediction of the trees in case of regression.
 With this plugin, you can execute a Random Forest classifier that uses 300 estimators (trees).
 A random_state is set to seven for reproducibility.
 
-The algorithm requires two parameters:
+The algorithm requiresthe following parameters:
 
 <ul>
   <li>A point vector layer with a numeric field called *label* as input data for training</li>
   <li>The image to process</li>
-  <li> (optional) A name for the output - classified image</li>
+  <li>(optional) A name for the output - classified image</li>
 </ul>
 
 You only need to prepare your training samples by adding points and label. 
