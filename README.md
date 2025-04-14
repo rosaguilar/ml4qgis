@@ -13,7 +13,7 @@ A random_state is set to seven for reproducibility.
 The algorithm requires two parameters:
 
 <ul>
-  <li>A point vector layer with a numeric field called *label* as input data for training</li>.
+  <li>A point vector layer with a numeric field called *label* as input data for training</li>
   <li>The image to process</li>
   <li>optionally a name for the output that is the classified image</li>
 </ul>
