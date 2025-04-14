@@ -89,6 +89,8 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         return self.tr(
             """
             Executes a random forest algorithm to classify an image.
+            The parameters are: number of estimators = 300 meaning 300 trees.
+            For reproducibility, a random_state = 7 is set.
             The training data is randomly split in 2/3 for training the model and 1/3 for testing. The output is a classified image (1 band).
             """
         )
