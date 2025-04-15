@@ -10,7 +10,7 @@ or the average of the prediction of the trees in case of regression.
 With this plugin, you can execute a Random Forest classifier that uses 300 estimators (trees).
 A random_state is set to seven for reproducibility.
 
-The algorithm requiresthe following parameters:
+The algorithm requires the following parameters:
 
 <ul>
   <li>A point vector layer with a numeric field called *label* as input data for training</li>
@@ -18,14 +18,14 @@ The algorithm requiresthe following parameters:
   <li>(optional) A name for the output - classified image</li>
 </ul>
 
-You only need to prepare your training samples by adding points and label. 
-The plugin will directly sample the raster to prepare the training data that is randomly split into training and testing sets.
+You only need to prepare your training samples with points and the class labels. 
+The plugin will directly sample the raster to prepare the training data, which will be randomly split into training and testing sets.
 
 ## Quick intro
 Watch the video below on how to run **ml4qgis**
 
 
-[![Watch the video](https://img.youtube.com/vi/Edn0epdH5A8/0.jpg)](https://www.youtube.com/watch?v=Edn0epdH5A8)
+[![Watch the video](https://img.youtube.com/vi/ndPQ6rklOkw/0.jpg)](https://www.youtube.com/watch?v=ndPQ6rklOkw)
 
 
 # Development
