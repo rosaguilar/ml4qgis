@@ -17,6 +17,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
     QgsProcessingParameterFeatureSource,
+    QgsProcessingParameterField,
     QgsProcessingParameterRasterDestination,
     QgsProcessingParameterRasterLayer,
     QgsRaster,
@@ -34,6 +35,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
     """
 
     TRAINING_DATA = "TRAINING_DATA"
+    CLASSIFICATION_FIELD = "CLASSIFICATION_FIELD"
     SOURCE_IMAGE = "SOURCE_IMAGE"
     CLASSIFIED_IMAGE = "CLASSIFIED_IMAGE"
 
@@ -122,6 +124,14 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
                 [QgsProcessing.SourceType.TypeVectorPoint],
             )
         )
+        # input field parameter
+        self.addParameter(
+            QgsProcessingParameterField(
+                self.CLASSIFICATION_FIELD,
+                self.tr("Classification field"),
+                parentLayerParameterName=self.TRAINING_DATA,
+            )
+        )
         # Raster image source. A raster format.
         self.addParameter(
             QgsProcessingParameterRasterLayer(
@@ -142,6 +152,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         source = self.parameterAsSource(parameters, self.TRAINING_DATA, context)
         if source is None:
             raise QgsProcessingException(self.invalidSourceError(parameters, self.TRAINING_DATA))
+        field_name = self.parameterAsString(parameters, self.CLASSIFICATION_FIELD, context)
         sourceImage = self.parameterAsRasterLayer(parameters, self.SOURCE_IMAGE, context)
         if sourceImage is None:
             raise QgsProcessingException(self.invalidSourceError(parameters, self.SOURCE_IMAGE))
@@ -156,7 +167,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         provider = sourceImage.dataProvider()
         num_bands = provider.bandCount()
 
-        label_field_index = source.fields().indexFromName("label")
+        label_field_index = source.fields().indexFromName(field_name)
         if label_field_index < 0:
             raise QgsProcessingException("No attribute named 'label' in layer")
 
@@ -164,6 +175,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
             source.sourceCrs(), sourceImage.crs(), context.project()
         )
 
+        classes = {}
         feature_list = []
         for feature in source.getFeatures():
             # Identify the raster values at the point for all bands
@@ -173,10 +185,14 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
 
             # Each sample contains: all band values first and the label last
             if results.isValid():
+                class_title = feature.attributes()[label_field_index]
+                if class_title not in classes:
+                    classes[class_title] = len(classes)
+                class_id = classes[class_title]
                 values = []
                 for band in range(1, num_bands + 1):  # Bands are 1-based
                     values.append(results.results()[band])
-                values.append(feature.attributes()[label_field_index])
+                values.append(class_id)
                 feature_list.append(values)
             else:
                 feedback.pushError(
@@ -232,5 +248,19 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         out_band = out_raster.GetRasterBand(1)
         out_band.WriteArray(class_image_2d)
         out_band.FlushCache()
+
+        rat = gdal.RasterAttributeTable()
+
+        rat.CreateColumn("Value", gdal.GFT_Integer, gdal.GFU_MinMax)
+        rat.CreateColumn("Class_name", gdal.GFT_String, gdal.GFU_Name)
+
+        for class_title, class_id in classes.items():
+            row_index = rat.GetRowCount()
+            rat.SetRowCount(row_index + 1)
+
+            rat.SetValueAsInt(row_index, 0, class_id)
+            rat.SetValueAsString(row_index, 1, str(class_title))
+
+        out_band.SetDefaultRAT(rat)
 
         return {self.CLASSIFIED_IMAGE: out_band}
