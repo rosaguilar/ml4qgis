@@ -30,6 +30,6 @@ Watch the video below on how to run **ml4qgis**
 
 
 # Development
-This plugin is developed in collaboration with Rosa Aguilar (ITC/University of Twente) and Matthias Kuhn (OpenGIS.ch).
+This plugin is developed in collaboration with Rosa Aguilar (ITC/University of Twente) and Matthias Kuhn ([OPENGIS.ch](https://opengis.ch)).
 
 
