@@ -10,3 +10,4 @@ repository=https://github.com/rosaguilar/ml4qgis
 homepage=https://github.com/rosaguilar/ml4qgis
 tracker=https://github.com/rosaguilar/ml4qgis/issues
 plugin_dependencies=qpip
+tags=ml4qgis,scikit,machine learning,classification,ml,ai
