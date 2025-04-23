@@ -2,7 +2,7 @@
 
 A processing plugin for using machine learning in QGIS.
 
-It exposes the power of [scikit-learn](https://scikit-learn.org/stable/) through QGIS processing.
+It exposes the power of [scikit-learn random forest](https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier) through QGIS processing.
 
 **Random Forest** is a robust, well-known machine learning algorithm for classification and regression tasks. 
 It works by creating multiple decision trees during the training. The output is generated via majority voting in case of classification
