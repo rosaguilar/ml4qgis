@@ -241,7 +241,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         rat.CreateColumn("Value", gdal.GFT_Integer, gdal.GFU_MinMax)
         rat.CreateColumn("Class_name", gdal.GFT_String, gdal.GFU_Name)
 
-        for class_id, class_title in classes.items():
+        for class_title, class_id in classes.items():
             row_index = rat.GetRowCount()
             rat.SetRowCount(row_index + 1)
 
