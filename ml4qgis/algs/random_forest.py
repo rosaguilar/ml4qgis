@@ -89,9 +89,22 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         return self.tr(
             """
             Executes a random forest algorithm to classify an image.
-            The parameters are: number of estimators = 300 meaning 300 trees.
+            Random Forest is a robust, well-known machine learning algorithm 
+            for classification and regression tasks. It works by creating multiple
+            decision trees during the training.
+            The output is generated via majority voting in case of classification,
+            or the average of the prediction of the trees in case of regression.
+            The parameters for the random forest are:
+            number of estimators = 300, meaning 300 trees.
             For reproducibility, a random_state = 7 is set.
             The training data is randomly split in 2/3 for training the model and 1/3 for testing. The output is a classified image (1 band).
+            
+            The plugin requires the following:
+            - A point vector layer with a numeric or text field as input data for training
+            - The classification field that is a numeric or text field containing the class labels
+            - The image to classify
+            - (optional) A name for the output - classified image
+            
             """
         )
 
