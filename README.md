@@ -28,8 +28,18 @@ Watch the video below on how to run **ml4qgis**
 
 [![Watch the video](https://img.youtube.com/vi/ndPQ6rklOkw/0.jpg)](https://www.youtube.com/watch?v=ndPQ6rklOkw)
 
+## Caracas release
+What's new?
+
+You can now specify the attribute name for your labels or classes, even text attributes! ML4QGIS will take care of all necessary conversions.
+
+The plugin samples your raster, splits the data into training and testing sets, and automatically displays the classified image in random colors.
+
+Watch the video below for the **Caracas** release
+
+[![Watch the video](https://img.youtube.com/vi/0BAF7OEyvlc/0.jpg)](https://www.youtube.com/watch?v=0BAF7OEyvlc)
 
 # Development
-This plugin is developed in collaboration with Rosa Aguilar (ITC/University of Twente) and Matthias Kuhn ([OPENGIS.ch](https://opengis.ch)).
+This plugin is developed in collaboration with Rosa Aguilar ([ITC/University of Twente](www.itc.nl)) and Matthias Kuhn ([OPENGIS.ch](https://opengis.ch)).
 
 
