@@ -23,9 +23,14 @@ from qgis.core import (
     QgsRaster,
 )
 from qgis.PyQt.QtCore import QCoreApplication
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix
-from sklearn.model_selection import train_test_split
+
+HAS_SKLEARN_DEPENDENCY = True
+try:
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import accuracy_score, confusion_matrix
+    from sklearn.model_selection import train_test_split
+except ImportError:
+    HAS_SKLEARN_DEPENDENCY = False
 
 
 class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
@@ -91,7 +96,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         return self.tr(
             """
             Executes a random forest algorithm to classify an image.
-            Random Forest is a robust, well-known machine learning algorithm 
+            Random Forest is a robust, well-known machine learning algorithm
             for classification and regression tasks. It works by creating multiple
             decision trees during the training.
             The output is generated via majority voting in case of classification,
@@ -100,13 +105,13 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
             number of estimators = 300, meaning 300 trees.
             For reproducibility, a random_state = 7 is set.
             The training data is randomly split in 2/3 for training the model and 1/3 for testing. The output is a classified image (1 band).
-            
+
             The plugin requires the following:
             - A point vector layer with a numeric or text field as input data for training
             - The classification field that is a numeric or text field containing the class labels
             - The image to classify
             - (optional) A name for the output - classified image
-            
+
             """
         )
 
@@ -143,6 +148,17 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterRasterDestination(self.CLASSIFIED_IMAGE, self.tr("Classified"))
         )
+
+    def prepareAlgorithm(self, parameters, context, feedback):
+        if not HAS_SKLEARN_DEPENDENCY:
+            feedback.reportError(
+                self.tr(
+                    "The scikit-learn python dependency is missing, please run pip install scikit-learn"
+                )
+            )
+            return False
+
+        return True
 
     def processAlgorithm(self, parameters, context, feedback):
         """

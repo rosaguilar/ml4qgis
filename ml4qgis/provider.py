@@ -4,6 +4,7 @@ from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 
 from .algs.random_forest import RandomForestProcessingAlgorithm
+from .algs.yolo_object_detection import YoloObjectDetectionProcessingAlgorithm
 
 
 class Ml4QgisProcessingProvider(QgsProcessingProvider):
@@ -13,7 +14,10 @@ class Ml4QgisProcessingProvider(QgsProcessingProvider):
         self.activate = True
 
         # Load algorithms
-        self.alglist = [RandomForestProcessingAlgorithm()]
+        self.alglist = [
+            RandomForestProcessingAlgorithm(),
+            YoloObjectDetectionProcessingAlgorithm(),
+        ]
 
         for alg in self.alglist:
             alg.setProvider(self)
