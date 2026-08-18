@@ -1,7 +1,7 @@
 [general]
 name=Machine Learning for QGIS
 description=Machine Learning for Image Classification/Regression in QGIS
-about=
+about= Machine learning for Image Classification/Regression in QGIS. Data preparation for Yolo training
 version=dev
 qgisMinimumVersion=3.40
 qgisMaximumVersion=4.99
