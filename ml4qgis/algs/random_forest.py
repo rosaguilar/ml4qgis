@@ -126,7 +126,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterFeatureSource(
                 self.TRAINING_DATA,
                 self.tr("Training data"),
-                [QgsProcessing.SourceType.TypeVectorPoint],
+                [QgsProcessing.SourceType.VectorPoint],
             )
         )
         # input field parameter
@@ -140,7 +140,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         # Raster image source. A raster format.
         self.addParameter(
             QgsProcessingParameterRasterLayer(
-                self.SOURCE_IMAGE, self.tr("Image to process"), [QgsProcessing.TypeRaster]
+                self.SOURCE_IMAGE, self.tr("Image to process"), [QgsProcessing.SourceType.Raster]
             )
         )
 
@@ -185,7 +185,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
 
         label_field_index = source.fields().indexFromName(field_name)
         if label_field_index < 0:
-            raise QgsProcessingException("No attribute named 'label' in layer")
+            raise QgsProcessingException("No attribute for labels found in layer")
 
         transform = QgsCoordinateTransform(
             source.sourceCrs(), sourceImage.crs(), context.project()
@@ -196,7 +196,7 @@ class RandomForestProcessingAlgorithm(QgsProcessingAlgorithm):
         for feature in source.getFeatures():
             # Identify the raster values at the point for all bands
             results = provider.identify(
-                transform.transform(feature.geometry().asPoint()), QgsRaster.IdentifyFormatValue
+                transform.transform(feature.geometry().asPoint()), QgsRaster.IdentifyFormat.IdentifyFormatValue
             )
 
             # Each sample contains: all band values first and the label last

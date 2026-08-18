@@ -1,13 +1,14 @@
 [general]
 name=Machine Learning for QGIS
-description=Machine Learning for Image Classification in QGIS
+description=Machine Learning for Image Classification/Regression in QGIS
 about=
 version=dev
 qgisMinimumVersion=3.40
+qgisMaximumVersion=4.99
 author=Rosa Aguilar
 email=rosamaguilar@gmail.com
 repository=https://github.com/rosaguilar/ml4qgis
 homepage=https://github.com/rosaguilar/ml4qgis
 tracker=https://github.com/rosaguilar/ml4qgis/issues
 plugin_dependencies=qpip
-tags=ml4qgis,scikit,machine learning,classification,ml,ai
+tags=ml4qgis,scikit,machine learning,classification, regression,ai

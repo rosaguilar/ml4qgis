@@ -33,7 +33,7 @@ from qgis.core import (
     QgsRectangle,
     QgsWkbTypes,
 )
-from qgis.PyQt.QtCore import QCoreApplication, QSize, QVariant
+from qgis.PyQt.QtCore import QCoreApplication, QSize
 from qgis.PyQt.QtGui import QImage
 
 HAS_YOLO_DEPENDENCY = True
@@ -172,10 +172,15 @@ class YoloObjectDetectionProcessingAlgorithm(QgsProcessingAlgorithm):
         model_file = self.parameterAsString(parameters, self.MODEL, context)
 
         output_fields = QgsFields()
-        output_fields.append(QgsField("names", QVariant.String))
-        output_fields.append(QgsField("confidence", QVariant.Double))
+        output_fields.append(QgsField("names", QMetaType.Type.QString))
+        output_fields.append(QgsField("confidence", QMetaType.Type.Double))
         output_sink, output_filename = self.parameterAsSink(
-            parameters, self.OUTPUT, context, output_fields, QgsWkbTypes.Polygon, input_layer.crs()
+            parameters,
+            self.OUTPUT, 
+            context, 
+            output_fields, 
+            QgsWkbTypes.Polygon, 
+            input_layer.crs()
         )
 
         model = YOLO(model_file)
@@ -256,7 +261,7 @@ class YoloObjectDetectionProcessingAlgorithm(QgsProcessingAlgorithm):
                     job.start()
                     job.waitForFinished()
 
-                    img = job.renderedImage().convertToFormat(QImage.Format_BGR888)
+                    img = job.renderedImage().convertToFormat(QImage.Format.Format_BGR888)
                     ptr = img.constBits()
                     ptr.setsize(tile_width_pixel * tile_width_pixel * 3)
                     arr = np.frombuffer(ptr, np.uint8).reshape(
