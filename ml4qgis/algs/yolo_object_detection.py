@@ -100,7 +100,7 @@ class YoloObjectDetectionProcessingAlgorithm(QgsProcessingAlgorithm):
         return "yoloobjectdetection"
 
     def groupId(self):
-        return "siemens"
+        return "yoloobjectdetection"
 
     def displayName(self):
         return self.tr("YOLO Object Detection")

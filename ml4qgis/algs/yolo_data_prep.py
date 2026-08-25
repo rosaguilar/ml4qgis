@@ -63,10 +63,10 @@ class YoloDataPrepProcessingAlgorithm(QgsProcessingAlgorithm):
         return self.tr("YOLO Data Preparation")
 
     def group(self):
-        return self.tr("Object Detection")
+        return self.tr("Data Preparation")
 
     def groupId(self):
-        return "objectdetection"
+        return "datapreparation"
 
     def shortHelpString(self):
         return self.tr(

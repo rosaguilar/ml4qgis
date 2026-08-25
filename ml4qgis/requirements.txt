@@ -1,4 +1,5 @@
 scikit-learn
+joblib
 lightgbm
 pandas
 ultralytics
