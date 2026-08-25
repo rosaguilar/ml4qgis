@@ -4,3 +4,4 @@ lightgbm
 pandas
 ultralytics
 onnxruntime
+Pillow
