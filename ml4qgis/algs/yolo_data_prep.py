@@ -221,8 +221,8 @@ class YoloDataPrepProcessingAlgorithm(QgsProcessingAlgorithm):
             raise QgsProcessingException("Overlap must be smaller than the tile size")
         train_split = self.parameterAsDouble(parameters, self.TRAIN_SPLIT, context)
         test_split = self.parameterAsDouble(parameters, self.TEST_SPLIT, context)
-        if train_split + test_split >= 1.0:
-            raise QgsProcessingException("Train split + test split must leave room for a val split (sum < 1)")
+        if train_split + test_split > 1.0:
+            raise QgsProcessingException("Train split + test split must be at maximum 1 (sum <= 1)")
         val_split = 1.0 - train_split - test_split
         feedback.pushInfo(f"Split fractions: train={train_split}, val={val_split:.3f}, test={test_split}")
         output_masks = self.parameterAsBoolean(parameters, self.OUTPUT_MASKS, context)
@@ -275,7 +275,7 @@ class YoloDataPrepProcessingAlgorithm(QgsProcessingAlgorithm):
         else:  # GeoTIFF, all bands
             band_count = ds.RasterCount
             band_ranges = None
-            feedback.pushInfo(f"Writing all {band_count} bands as float32 reflectance (/10000)")
+            feedback.pushInfo(f"Writing all {band_count} bands as float32 reflectance")
 
         band_nodata = [ds.GetRasterBand(b).GetNoDataValue() for b in range(1, band_count + 1)]
         if skip_nodata:
@@ -502,7 +502,8 @@ class YoloDataPrepProcessingAlgorithm(QgsProcessingAlgorithm):
                 else:  # GeoTIFF, all bands, raw reflectance (/10000)
                     tile_arr = np.zeros((band_count, tile_size, tile_size), dtype=np.float32)
                     for b in range(1, band_count + 1):
-                        tile_arr[b - 1, :win_h, :win_w] = raw_bands[b - 1] / 10000.0
+                        # tile_arr[b - 1, :win_h, :win_w] = raw_bands[b - 1] / 10000.0   - skip scaling for now.
+                        tile_arr[b - 1, :win_h, :win_w] = raw_bands[b - 1]
                     image_filename = f"{tile_name}.tif"
                     tile_gt = (tile_xmin, px_w, 0, tile_ymax, 0, px_h)
                     write_geotiff_tile(

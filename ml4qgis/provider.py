@@ -5,7 +5,7 @@ from qgis.PyQt.QtGui import QIcon
 
 from .algs.random_forest import RandomForestProcessingAlgorithm
 from .algs.regression import RegressionProcessingAlgorithm
-from .algs.yolo_data_prepOld import YoloDataPrepProcessingAlgorithm
+from .algs.yolo_data_prep import YoloDataPrepProcessingAlgorithm
 from .algs.yolo_object_detection import YoloObjectDetectionProcessingAlgorithm
 
 class Ml4QgisProcessingProvider(QgsProcessingProvider):
